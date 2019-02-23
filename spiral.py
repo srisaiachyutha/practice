@@ -55,7 +55,8 @@ for l in range(k//2):
 
 for i in range(n):
     for j in range(n):
-        print(m[i][j], ' ',end='')
+         print("%6d "%(m[i][j]),end="")
+        #print(m[i][j], ' ',end='')
     print()
 
 
