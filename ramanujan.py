@@ -4,9 +4,9 @@
 # sum of 1,2,3,4,5  is equal to the 7,8 the right side sum.
 
 
-n=0
-i=10000
-while n<=0:
+n=5
+i=1
+while n>=0:
     s=i*(i-1)//2
     s2=0
     j=i+1
@@ -14,7 +14,7 @@ while n<=0:
         s2+=j
         if s2==s:
             print(i)
-            n+=1
+            n-=1
             break
         j+=1
         
