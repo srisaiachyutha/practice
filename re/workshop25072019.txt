@@ -1,0 +1,10 @@
+1) print sum of numbers uding re module and dynamic input string at run time
+ex:-
+enter string :gbh%67j(1^1) Huh76
+sum of numbesrs from given string =145
+
+2) print sum of digits using re module and dynamic input string at run time.
+
+ex:-
+enter string :gbh%67j(1^1) Huh76
+sum of numbesrs from given string =28
