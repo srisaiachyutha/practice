@@ -1,0 +1,418 @@
+
+model view controller
+
+
+
+-----------------------
+
+mvc folder structure
+
+App_Data  - this folder contains data files like LocalDB , .mdf files , xml files
+
+App_Start. - BundleConfig.cs, AuthConfig.cs, FilterConfig.cs 
+
+Content  - it contains static files like css  files , images and icon files
+
+Controllers - It contains class files which handle user's request and response. All the controller file name ends with Controller word like HomeController. 
+
+Models - It contains model class files which handles database task.
+
+Scripts - It contains scripts file like JavaScript, VBScript, JQuery etc.
+
+Views - It contains HTML files. There may be separate folder for each controller. 
+
+ Shared - It is under view folder and it contains shared files like master page layout etc. Shared folder content can be accessed by any controller.
+
+Global.json – This file is used for add dependencies or add external projects reference into your current project. It specifies the path where system should search for dependency folder.
+
+Global.asax – It allows you to write code at application level events such as Application_BeginRequest, application_start, application_error, sesson_start, sesson_end etc.
+
+ Global.json – This file is used for add dependencies or add external projects reference into your current project. It specifies the path where system should search for dependency folder.
+
+
+
+
+--------------------
+
+controller 
+	it is a main part of MVC , it acts as a mediator between client-side request and server-side response . Each browser request is mapped with the particular controller and each controller has several action methods to handle browser requests. all controller class must be named by using the "controller" suffix.
+
+All the public methods which are written inside a Controller are known as Action Method. When creating Action Method you must follow these rules.
+
+a. Action method must be public.
+b. It cannot be overloaded.
+c. It cannot be a static method.
+d. Every controller has at least one default Action method Index() that returns the view page.
+e. ActionResult is a base class of all the result type action methods.
+
+ActionResult is the base class of all the result type action method. There are following Result type action method in MVC.
+
+ViewResult - Represents HTML and markup.
+EmptyResult - Represents no result.
+RedirectResult - Represents a redirection to a new URL.
+JsonResult - Represents a JavaScript Object Notation result that can be used in an AJAX application.
+JavaScriptResult - Represents a JavaScript script.
+ContentResult - Represents a text result.
+FileContentResult - Represents a downloadable file (with the binary content).
+FilePathResult - Represents a downloadable file (with a path).
+
+
+
+views  
+
+Views is a folder in MVC structure which contains .cshtml file and design layout which is used in displaying and rendering web pages onto the user’s computers.
+
+The Views folder keeps a separate folder for each controller and each folder keeps different.cshtml pages for all action methods belong to that controller. Views folders name is same as Controllers name and .cshtml pages name same as action methods.
+
+1. View Pages must refer to a controller action method. If you have added a view page but didn’t create an action method in the controller, then you will get HTTP 404 Error. This is because, in MVC, Controller manages user request and returns a response to the user. So, if the action method isn’t available in a controller, the controller will return HTTP 404 Error message.
+
+a. Suppose, you open the following link:
+localhost:1233/Home/Enquiry
+Here, localhost:1233 is your application or domain name
+Home is controller, and
+Enquiry is Action Method.
+
+b. The request goes to Home Controller first and finds Enquiry Action Method.
+c. If Enquiry Action method found in Home Controller then it will look for Enquiry.cshtml View Pages in Home Folder.
+d. You must remember that every Controller should have a folder in Views with the same name as controller name. And, every folder in View should have .cshtml view pages as the same name as an action method.
+e. If there is Enquiry Action Method in Home Controller, there must be Enquiry.cshtml View Page in Home Folder in Views.
+
+2. Controller name and Views Folder name should be same.
+
+3. Action Method and .cshtml file name should be same.
+
+
+-----------
+@{
+        Layout = "~/Views/Shared/_DarkLayout.cshtml";
+}
+
+like this we can attach a layout to out webpage.
+
+---------------
+
+@RenderBody is used for injecting content from child page into the master page design. If there is no named section in child page, the content will get displayed in RenderBody section.
+
+
+@RenderSection is used for injecting content in the defined section. It allows you to specify a region in Layout.
+
+Two steps are there to define @RenderSection in ASP.NET MVC.
+
+@RenderSection("Note",false) rendering the section in the layout page
+
+@section Note
+{
+    I am a RenderSectionArea.
+}
+
+defining the section in the our page.
+
+
+@RenderPage is used to call one page inside another page.
+
+example  --  @RenderPage("~/Views/Shared/_StaticPromotionalPage.cshtml")
+
+
+---------------
+
+Partial View is a subpage of Main View page that keeps reusable parts of web pages. If your Main Page is too large then you can divide it into several pieces and store content into a partial page with a logical name. After that, you can call this partial page inside your main view page.
+
+@Html.Partial("Header"). // like this we call the cshtml page.
+
+ 1. It is an effective way to breaking up large view pages into smaller components.
+2. A partial page is reusable so keep common content in the partial page and used wherever you want.
+
+------------------
+
+viewbag
+	ViewBag is used to pass data from controllers to views.
+	ViewBag has a short life means once it passed value from controllers to views, it becomes null.
+	ViewBag doesn't require typecasting.
+
+
+viewdata
+
+- It is also used for sending information from controllers to views.
+- Once it sends information, it becomes null.
+- ViewData is a Dictionary Object that is derived from ViewDataDictionary.
+- ViewData uses Key-Value pair for storing and retrieving information.
+- It requires typecasting for complex data type.
+
+
+tempdata
+
+TempData is also used for sending data from controllers to view but it is little different from ViewBag and ViewData. TempData is mostly used to transfer value from one controller to another controller. It is most useful when you redirect one page to another page and want to send some information along with it. It has a bigger life than ViewBag and ViewData and you can access TempData value in 2 to 3 HTTP Request.
+
+TempData internally use Session to store value.
+You must check for null before using TempData in order to avoid Runtime Error.
+TempData is alive in two subsequent request. It uses TempData.Keep() method for third request.
+TempData is also an dictionary object that stores information in key-value pair. It is derived from TempDataDictionary.
+
+-----------------------
+
+Models
+
+Model is nothing just a folder in your MVC Project that keeps classes relates to Database Management System. In simple word, all the class files which are responsible for accessing data from the database should be kept here. Later, the controller will use this class file for accessing data and rendering views.
+
+Model is like a bridge between your application and Databases.
+
+ Open Root Web.config file and add connection string before </Configuration> as follow.
+for attaching the database.
+
+we can add entity framework and also add and manage that database
+
+
+using System.Data.Entity; This namespace will allow you to inherit DBContext and all its features. DBContext is an important part of Entity Framework that allows your class to communicate with database. It works like a bridge between your entity classes and the databases.
+
+--------------------
+
+
+There are following 9 ways by which you can display model data to view pages.
+1. View Model
+2. ViewBag, ViewData, and TempData
+3. Session, Tuples, and Dynamic
+4. Render Action and Navigation Properties
+
+
+View Model is nothing, just a class that calls all models in a single class and then returns values to view pages. It becomes very useful when you have multiple models and want to display their value in one view pages
+
+
+ASP.NET Session is also used for passing data between models/controllers to the view page but its value doesn’t become null after passing information until you manually set it to null or session times expires. By default, in ASP.NET MVC, session time is 20 minutes and you can increase or decrease time upon your needs. A session is mostly used in login page where a user is considered as validated until the session expires or the user clicks on log out button.
+
+Tuples are first introduced in .NET Framework 4.0. It is immutable, fixed-size and ordered sequence object. It is a data structure that has a specific number and sequence of elements and it supports up to 7 to 8 elements. You can use Tuples for passing multiple models in a single view page.
+
+
+ExpandoObject can also be used for passing data among Models, Controllers and Views. The member of ExpandoObject can be added or removed at runtime. It is very flexible and dynamic in nature and very useful when you want to display view page dynamically at runtime.
+
+
+render action 
+
+Render Action is a special controller method that includes partial view into main view page. If you want to display multiple models into a single view page, you can use Render Action Methods to do it.
+
+
+
+---------------
+
+forms with 4 ways
+
+Forms - Weakly Typed (Synchronous)
+Forms - Strongly Typed (Synchronous)
+Forms - Strongly Typed AJAX (Asynchronous)
+Forms – HTML, AJAX and JQUERY
+
+
+1. weakly typed
+
+namespace MvcForms.Models
+{
+    public class StudentModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool Addon { get; set; }
+    }
+}
+
+Index.cshtml
+
+<h4 style="color:purple">
+    <b>ID:</b>    @ViewBag.ID <br />
+    <b>Name:</b>  @ViewBag.Name <br />
+    <b>Addon:</b> @ViewBag.Addon
+</h4>
+<hr />
+<h3><b>Forms: Weakly Typed</b></h3>
+ 
+<form action="form1" method="post">
+    <table>
+        <tr>
+            <td>Enter ID: </td>
+            <td><input type="text" name="txtId" /></td>
+        </tr>
+        <tr>
+            <td>Enter Name: </td>
+            <td><input type="text" name="txtName" /></td>
+        </tr>
+        <tr>
+            <td>Addon: </td>
+            <td><input type="checkbox" name="chkAddon" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Submit Form" /></td>
+        </tr>
+    </table>
+</form>
+
+
+[HttpPost] 
+        public ActionResult form1(int txtId, string txtName, string chkAddon)
+        {
+            ViewBag.Id = txtId;
+            ViewBag.Name = txtName;
+            if (chkAddon != null)
+                ViewBag.Addon = "Selected";
+            else
+                ViewBag.Addon = "Not Selected";
+ 
+            return View("Index");
+        }
+
+
+
+2. Forms : strongly typed
+
+@model MvcForms.Models.StudentModel
+<h4 style="color:purple">
+    <b>ID:</b>    @ViewBag.ID <br />
+    <b>Name:</b>  @ViewBag.Name <br />
+    <b>Addon:</b> @ViewBag.Addon
+</h4>
+<hr />
+<h3><b>Forms: Strongly Typed</b></h3>
+ 
+@using (Html.BeginForm("Form2", "Home", FormMethod.Post))
+{ 
+    <table>
+        <tr>
+            <td>Enter ID: </td>
+            <td>@Html.TextBoxFor(m => m.Id)</td>
+        </tr>
+        <tr>
+            <td>Enter Name: </td>
+            <td>@Html.TextBoxFor(m => m.Name)</td>
+        </tr>
+        <tr>
+            <td>Addon: </td>
+            <td>@Html.CheckBoxFor(m => m.Addon)</td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Submit Form" /></td>
+        </tr>
+    </table>
+
+[HttpPost] 
+        public ActionResult Form2(Models.StudentModel sm)
+        {
+            ViewBag.Id = sm.Id;
+            ViewBag.Name = sm.Name;
+            if (sm.Addon == true)
+                ViewBag.Addon = "Selected";
+            else
+                ViewBag.Addon = "Not Selected";
+ 
+            return View("Index");
+        }
+
+
+
+3. forms - strongly typed ajax ( asynchronous)
+
+we will use JQuery-Unobstrusive-AJAX. This is a great feature which is launched in MVC 3. It helps you to create AJAX Form without writing bunch of javascript code. Before creating Asynchronous AJAX Form you need to add JQuery-Unobstrusive-AJAX in your project.
+
+@model MvcForms.Models.StudentModel
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
+ 
+<h4 id="id1" style="color:purple"></h4>
+<hr />
+<h3><b>Forms - Strongly Typed AJAX (Asynchronous)</b></h3>
+    @using (Ajax.BeginForm("Form3", "Home", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "id1",
+        LoadingElementId = "LoadingImage",
+        OnSuccess = "onSuccess_Message",
+        OnFailure="onFailure_Message"
+        
+    }))
+    {
+        <table>
+            <tr>
+                <td>Enter ID: </td>
+                <td>@Html.TextBoxFor(m => m.Id)</td>
+            </tr>
+            <tr>
+                <td>Enter Name: </td>
+                <td>@Html.TextBoxFor(m => m.Name)</td>
+            </tr>
+            <tr>
+                <td>Addon: </td>
+                <td>@Html.CheckBoxFor(m => m.Addon)</td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Submit Form" /></td>
+            </tr>
+        </table>
+        <div id="LoadingImage" style="display:none">Loading...</div>
+        <div id="onSuccess_Message"></div>
+	<div id="onFailure_Message"></div>
+    }
+
+
+
+4 . html forms with ajax and query
+
+<h3><b>Forms - Pure HTML and JQUERY</b></h3>
+ 
+    <table>
+        <tr>
+            <td>Enter ID: </td>
+            <td><input type="text" id="Id" /></td>
+        </tr>
+        <tr>
+            <td>Enter Name: </td>
+            <td><input type="text" id="Name" /></td>
+        </tr>
+        <tr>
+            <td>Addon: </td>
+            <td><input type="checkbox" id="Addon" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button onclick="submit()">Submit Form</button></td>
+        </tr>
+    </table>
+ 
+<h4 style="color:purple" id="output"></h4>
+ 
+<script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script>
+    function submit(){
+        var data = {
+            Id: $('#Id').val(),
+            Name: $('#Name').val(),
+            Addon: $('#Addon').is(':checked')
+        };
+ 
+        $.post("/Home/Form4", { sm: data }, function () { alert('Successfully Saved') });
+    }
+</script>
+
+
+[HttpPost] 
+        public ActionResult Form4(StudentModel sm)
+        {
+            string value = "ID: "+ Convert.ToString(sm.Id) 
+                + "<br />Name: " + sm.Name 
+                + "<br />Addon: " + Convert.ToString(sm.Addon);
+ 
+            string s = "$('#output').html('" + value + "');";
+            return JavaScript(s);
+        }
+
+----------------
+form collection
+
+A FormCollection Object is used to retrieve form input values in action method. In the previous chapter, I have explained 4 different ways to create form and gather form data in action method. FormCollection object makes programmers job easier and forms data can be easily accessed in action method
+
+[HttpPost] 
+        public ActionResult Submit(FormCollection fc)
+        {
+            ViewBag.Id = fc["Id"];
+            ViewBag.Name = fc["Name"];
+            bool chk = Convert.ToBoolean(fc["Addon"].Split(',')[0]);
+            ViewBag.Addon = chk;
+ 
+            return View("Index");
+        }
+
+
